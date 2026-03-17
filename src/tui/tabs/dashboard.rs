@@ -1,7 +1,7 @@
 //! Dashboard tab -- status cards and memory gauge.
 
 use crate::tui::theme;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{prelude::*, widgets::{Block, Borders, Gauge, Paragraph}};
 
 pub fn render(frame: &mut Frame, area: Rect) {
     let chunks = Layout::default()

@@ -79,7 +79,8 @@ impl TuiApp {
         }
     }
 
-    /// Run the TUI event loop (stub -- wired up in PR-15).
+    /// Run the TUI event loop.
+    #[allow(clippy::unused_async)]
     pub async fn run(&mut self) -> Result<()> {
         use crossterm::{
             event::{self, Event, KeyCode, KeyModifiers},
@@ -104,8 +105,8 @@ impl TuiApp {
             if event::poll(std::time::Duration::from_millis(100))? {
                 if let Event::Key(key) = event::read()? {
                     match (key.modifiers, key.code) {
-                        (KeyModifiers::CONTROL, KeyCode::Char('c')) => self.should_quit = true,
-                        (_, KeyCode::Char('q')) => self.should_quit = true,
+                        (KeyModifiers::CONTROL, KeyCode::Char('c'))
+                        | (_, KeyCode::Char('q')) => self.should_quit = true,
                         (_, KeyCode::Tab) => self.active_tab = self.active_tab.next(),
                         (KeyModifiers::SHIFT, KeyCode::BackTab) => {
                             self.active_tab = self.active_tab.prev();
@@ -124,7 +125,7 @@ impl TuiApp {
     }
 
     fn render(&self, frame: &mut ratatui::Frame) {
-        use ratatui::{prelude::*, widgets::*};
+        use ratatui::{prelude::*, widgets::{Block, Borders, Paragraph, Tabs}};
 
         let chunks = Layout::default()
             .direction(Direction::Vertical)
